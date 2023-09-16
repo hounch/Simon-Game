@@ -9,12 +9,12 @@ h1 {
     font-family: PressStart2P;
 }
 
-.element {
+.btn {
     margin: 1em;
     border-radius: 20%;
-    border: 8px black solid;
-    height: 10em;
-    width: 10em;
+    border: 9px black solid;
+    height: 12em;
+    width: 12em;
 }
 
 .green {
@@ -43,4 +43,9 @@ h1 {
 
 .up {
     margin-top: 2em;
+}
+
+.pressed {
+    background-color: grey;
+    box-shadow: 0 0 20px whitesmoke;
 }

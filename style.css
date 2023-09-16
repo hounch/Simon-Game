@@ -1,0 +1,46 @@
+body {
+    background-color: #01203F;
+}
+
+h1 {
+    text-align: center;
+    color: #FCF0BA;
+    font-size: 3rem;
+    font-family: PressStart2P;
+}
+
+.element {
+    margin: 1em;
+    border-radius: 20%;
+    border: 8px black solid;
+    height: 10em;
+    width: 10em;
+}
+
+.green {
+    background-color: #008001;
+    display: inline-block;
+}
+
+.red {
+    background-color: #FE0000;
+    display: inline-block;
+}
+
+.yellow {
+    background-color: #FDFF24;
+    display: inline-block;
+}
+
+.blue {
+    background-color: #0704DD;
+    display: inline-block;
+}
+
+.line {
+    text-align: center;
+}
+
+.up {
+    margin-top: 2em;
+}

@@ -1,28 +1,27 @@
 var level = 0;
 let gamePattern = [];
 let userClickedButton = [];
-
+let clickCounter = 0;
 let buttonColors = ['red','blue','green','yellow'];
-
 //HARD-TASK: Click 5 buttons if it's 5 level 
 
 $(document).keypress(function() {
-    //fix function that it callable only 
-    //when game is not started
-    random_button_generator();
+    if (gamePattern.length == 0) {
+        random_button_generator();
+        animation(gamePattern[0]);
+        sounds(gamePattern[0]);
+    }
 });
 
 
 $(".btn").click(function() {
-    //animation
-    var chosenColor = $(this).attr('id'); //yellow
+    var chosenColor = $(this).attr('id');
     userClickedButton.push(chosenColor);
     sounds(chosenColor);
     animation(chosenColor);
-    random_button_generator();
+    console.log(userClickedButton,'user'); 
+    console.log(gamePattern,'game');
     checkAnswer();
-    // console.log(userClickedButton,'user');
-    // console.log(gamePattern,'game');
 });
 
 function sounds(name) {
@@ -38,45 +37,51 @@ function animation(name) {
 }
 
 function random_button_generator() {
+    userClickedButton = [];
     level++;
     $('h1').text('Level: ' + level);
     var randomNumber = Math.floor(Math.random() * 4);
     gamePattern.push(buttonColors[randomNumber]);
-    //sound again 
+    console.log(gamePattern,'answer');
 }
 
-
 function checkAnswer() {
-    console.log('clicked ' + userClickedButton[userClickedButton.length-1]);
-    console.log('game ',gamePattern[gamePattern.length-1]);
+    //color from userPattern match GamePattern
+    console.log(userClickedButton[userClickedButton.length-1],'user good?');
+    console.log(gamePattern[userClickedButton.length-1],'game');
 
-    if (userClickedButton[userClickedButton.length-1] == gamePattern[gamePattern.length-1]) {
-        // next sequence
-        // stop generating and clicking at the same time 
-        console.log('Good');
+    if (userClickedButton[userClickedButton.length-1] == gamePattern[userClickedButton.length-1]) {
 
-    } else {
+        if (userClickedButton.length == gamePattern.length) {
+            random_button_generator();
+            setTimeout(() => {
+                animation(gamePattern[gamePattern.length-1])
+            }, 1000);
+
+            // animation(gamePattern[gamePattern.length-1]);
+            // for (let i = 0; i < level; i++) {
+            //     setTimeout(animation(gamePattern[i]), 1000);            
+            // }
+            console.log('Good');
+        }
+    }
+     else {
         //bad sound
+        var audio2 = new Audio('sounds/wrong.mp3');
+        audio2.play();
         //show that game is over with ("Game Over, Press Any Key to Restart")
+        $('h1').text('Game Over. Press any key to restart');
         //after some time start again 
+        setTimeout(startOver, 2000);
         console.log('ne good');
     }
-    
 
-    // switch (name) {
-    //     case name2:
-    //         random_button_generator();
-    //         break;
-    //     default:
-    //         var audio2 = new Audio('sounds/wrong.mp3');
-    //         audio2.play();
-    //         startOver();
-    //         break;
-    // }
 }
 
 function startOver() {
-    random_button_generator();
+    userClickedButton = [];
+    level = 0;
+    gamePattern = [];
 }
 
 

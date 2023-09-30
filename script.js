@@ -3,8 +3,8 @@ let gamePattern = [];
 let userClickedButton = [];
 let clickCounter = 0;
 let buttonColors = ['red','blue','green','yellow'];
-//HARD-TASK: Click 5 buttons if it's 5 level 
 
+//Start a game with pressing a keyboard key
 $(document).keypress(function() {
     if (gamePattern.length == 0) {
         random_button_generator();
@@ -13,7 +13,7 @@ $(document).keypress(function() {
     }
 });
 
-
+//Registering click of the user
 $(".btn").click(function() {
     var chosenColor = $(this).attr('id');
     userClickedButton.push(chosenColor);
@@ -24,11 +24,13 @@ $(".btn").click(function() {
     checkAnswer();
 });
 
+//Playing sounds
 function sounds(name) {
     var audio = new Audio('sounds/' + name + '.mp3');
     audio.play();
 }
 
+//Playing animation
 function animation(name) {
     $("#" + name).addClass('pressed');
     setTimeout(() => {
@@ -36,6 +38,7 @@ function animation(name) {
     }, 300);
 }
 
+//Generating next button
 function random_button_generator() {
     userClickedButton = [];
     level++;
@@ -45,8 +48,9 @@ function random_button_generator() {
     console.log(gamePattern,'answer');
 }
 
+//Checking clicked button
 function checkAnswer() {
-    //color from userPattern match GamePattern
+    //Color from userPattern match GamePattern
     console.log(userClickedButton[userClickedButton.length-1],'user good?');
     console.log(gamePattern[userClickedButton.length-1],'game');
 
@@ -54,30 +58,39 @@ function checkAnswer() {
 
         if (userClickedButton.length == gamePattern.length) {
             random_button_generator();
-            setTimeout(() => {
-                animation(gamePattern[gamePattern.length-1])
-            }, 1000);
+            function delayAnim(i) {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        animation(gamePattern[i])
+                        resolve()
+                    }, 1000 * (i + 1));
+                })
+            }
 
-            // animation(gamePattern[gamePattern.length-1]);
-            // for (let i = 0; i < level; i++) {
-            //     setTimeout(animation(gamePattern[i]), 1000);            
-            // }
+            let promises = []
+            // Show previous buttons / game pattern
+            for (let i = 0; i < level; i++) {
+                promises.push(delayAnim(i))
+            }
             console.log('Good');
         }
     }
+    
+    //If wrong button
      else {
-        //bad sound
+        //Bad sound
         var audio2 = new Audio('sounds/wrong.mp3');
         audio2.play();
-        //show that game is over with ("Game Over, Press Any Key to Restart")
+        //Show that game is over with ("Game Over, Press Any Key to Restart")
         $('h1').text('Game Over. Press any key to restart');
-        //after some time start again 
+        //After some time start again 
         setTimeout(startOver, 2000);
         console.log('ne good');
     }
 
 }
 
+//Starting new game
 function startOver() {
     userClickedButton = [];
     level = 0;
